@@ -85,10 +85,9 @@ public:
     AVIWriter();
     void start(unsigned int fps, unsigned int width, unsigned int height);
     void start(unsigned int width, unsigned int height, QString outputDirectory, int fps = 0); //Test
-    void addFrame(QImage *pix);
-    void addFrame2(QImage *pix, int quality = -1); //Test
+    void addFrame(QImage *pix, int quality = -1);
     void stop();
-    void stop(int time, int numberOfFrames); //Test
+    void stop(int time, int numberOfFrames);
 private:
     List m_aviList;
     List m_hdrlList;
@@ -103,12 +102,11 @@ private:
     List m_moviList;
     Chunk m_indexChunk;
     AviIndex m_index;
-    QVector<unsigned int> m_framesSizes; //изменить чтобы занать какой кадр записыввается видео или аудио
+    QVector<unsigned int> m_framesSizes;
     QFile m_file;
     qint64 m_pos;
     qint64 m_pos2;
 
-    //Test
     qint64 m_microSecPerFramePos;
     qint64 m_ratePos;
     bool m_isFpsSet;

@@ -89,7 +89,7 @@ void MainWindow::on_buttonStart_clicked()
                     }
 
                     m_vecImage[i] = m_futureVecImage.at(i).result();
-                    m_writer.addFrame2(&m_vecImage[i], quality);
+                    m_writer.addFrame(&m_vecImage[i], quality);
 
                     m_futureVecImage[((numberOfThreads+i-1)%numberOfThreads)] = QtConcurrent::run(this, &MainWindow::takeFrame);
                     ++m_frames;
@@ -123,7 +123,7 @@ void MainWindow::on_buttonStart_clicked()
                     QThread::msleep(sleep);
                 }
                 m_frame = m_screens.at(ui->spinBoxMonitors->value()-1)->grabWindow(0).toImage();
-                m_writer.addFrame2(&m_frame, quality);
+                m_writer.addFrame(&m_frame, quality);
 
                 ++m_frames;
 
@@ -152,7 +152,7 @@ void MainWindow::on_buttonStart_clicked()
                 for(int i = 0; i < numberOfThreads; ++i)
                 {
                     m_vecImage[i] = m_futureVecImage.at(i).result();
-                    m_writer.addFrame2(&m_vecImage[i], quality);
+                    m_writer.addFrame(&m_vecImage[i], quality);
 
                     m_futureVecImage[((numberOfThreads+i-1)%numberOfThreads)] = QtConcurrent::run(this, &MainWindow::takeFrame);
                     ++m_frames;
@@ -173,7 +173,7 @@ void MainWindow::on_buttonStart_clicked()
             while(!m_isDone)
             {
                 m_frame = m_screens.at(ui->spinBoxMonitors->value()-1)->grabWindow(0).toImage();
-                m_writer.addFrame2(&m_frame, quality);
+                m_writer.addFrame(&m_frame, quality);
 
                 ++m_frames;
 

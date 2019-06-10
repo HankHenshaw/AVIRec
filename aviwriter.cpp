@@ -1,7 +1,5 @@
 #include "aviwriter.h"
 
-//TODO: Заменить в reinterpret_cast chat* на uchar* ???
-
 AVIWriter::AVIWriter()
 {
     /*Обнуляем*/
@@ -48,14 +46,14 @@ AVIWriter::AVIWriter()
 
     /*strh Chunk*/
     m_strhChunk.fourCC = 0x68727473; // strh
-    m_strhChunk.size = sizeof(AviStreamHeader) + 8; // 4 bytes for strh and 4 bytes for size of this chunk WARNING Possible wrong value
+    m_strhChunk.size = sizeof(AviStreamHeader) + 8; // 4 bytes for strh and 4 bytes for size of this chunk
     /*strh Chunk*/
 
     //Stream Header
 
     /*strf Chunk*/
     m_strfChunk.fourCC = 0x66727473; //strf
-    m_strfChunk.size = sizeof(AviStreamFormat); //  WARNING: Possible wrong value
+    m_strfChunk.size = sizeof(AviStreamFormat);
     /*strf Chunk*/
 
     //Stream Format
@@ -85,13 +83,13 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
 
     /*Main Header*/
     m_mainHeader.microSecPerFrame = 1000000 / fps;
-    m_mainHeader.maxBytesPerSec = width*height*4; // width*height*3 ???
+    m_mainHeader.maxBytesPerSec = width*height*4;
     m_mainHeader.paddingGranularity = 0;
     m_mainHeader.flags = 0x1001;
     m_mainHeader.totalFrames = 0; // Пока 0, т.к. еще не добавлено ни одного кадра
     m_mainHeader.initialFrames = 0;
     m_mainHeader.streams = 1; // Пока 1, потом в зависимости от кол-ва потоков
-    m_mainHeader.suggestedBufferSize = width*height*4; // width*height*3 ???
+    m_mainHeader.suggestedBufferSize = width*height*4;
     m_mainHeader.width = width;
     m_mainHeader.height = height;
     /*Main Header*/
@@ -108,9 +106,9 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     m_aviStream.rate = fps;
     m_aviStream.start = 0;
     m_aviStream.length = 0; // пока 0, т.к. еще не добавлено ни одного кадра
-    m_aviStream.suggestedBufferSize = width*height*4; // width*height*3 ???
+    m_aviStream.suggestedBufferSize = width*height*4;
     m_aviStream.quality = -1; //WARNING: Possible problem
-    m_aviStream.sampleSize = width*height*4; // width*height*3 ???
+    m_aviStream.sampleSize = width*height*4;
     /*Avi stream header*/
 
     /*Avi stream format*/
@@ -118,9 +116,9 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     m_streamFormat.width = width;
     m_streamFormat.height = height;
     m_streamFormat.planes = 1;
-    m_streamFormat.bitCount = 32; // Глянуть в каком формате и разрядности делает скриншоты Qt!!! 24???
+    m_streamFormat.bitCount = 32;
     m_streamFormat.compression = m_aviStream.fccHandler; // XVID, пока только этот кодек, потом поменять
-    m_streamFormat.sizeImage = width*height*4; // width*height*3 ???
+    m_streamFormat.sizeImage = width*height*4;
     m_streamFormat.xPelsPerMeter = 0;
     m_streamFormat.yPelsPerMeter = 0;
     m_streamFormat.clrUsed = 0;
@@ -232,12 +230,10 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.start), 4) == -1)
         qDebug() << "Error while writing m_aviStream.start";
 
-    /*Temp*/
     m_pos2 = m_file.pos();
     if(!m_pos2)
         qDebug() << "Error wrong position";
-    /*Temp*/
-    //пока 0, т.к. нету кадров
+
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.length), 4) == -1)
         qDebug() << "Error while writing m_aviStream.length";
 
@@ -253,10 +249,8 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.language), 4) == -1)
         qDebug() << "Error while writing m_aviStream.language";
 
-    /*Test*/
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.language), 4) == -1)
         qDebug() << "Error while writing m_aviStream.language";
-    /*Test*/
 
     if(m_file.write(reinterpret_cast<char*>(&m_strfChunk.fourCC), 4) == -1)
         qDebug() << "Error while writing m_strfChunk.fourCC";
@@ -308,6 +302,8 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     /*Блок Junk*/
 
     //Запись аудио
+    //Записи нет, т.к. Qt не умеет записывать с "аудиовыхода"
+    //Запись аудио
 
     qint64 pos = m_file.pos();
     if(!pos)
@@ -343,7 +339,6 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
 
 }
 
-/*Test Start*/
 void AVIWriter::start(unsigned int width, unsigned int height, QString outputDirectory, int fps)
 {
     m_isFpsSet = fps;
@@ -356,13 +351,13 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
         m_mainHeader.microSecPerFrame = 0; //0 - т.к. мы пока не знаем реальный fps
     else
         m_mainHeader.microSecPerFrame = static_cast<uint>(1000000 / fps);
-    m_mainHeader.maxBytesPerSec = width*height*4; // width*height*3 ???
+    m_mainHeader.maxBytesPerSec = width*height*4;
     m_mainHeader.paddingGranularity = 0;
     m_mainHeader.flags = 0x1001;
     m_mainHeader.totalFrames = 0; // Пока 0, т.к. еще не добавлено ни одного кадра
     m_mainHeader.initialFrames = 0;
     m_mainHeader.streams = 1; // Пока 1, потом в зависимости от кол-ва потоков
-    m_mainHeader.suggestedBufferSize = width*height*4; // width*height*3 ???
+    m_mainHeader.suggestedBufferSize = width*height*4;
     m_mainHeader.width = width;
     m_mainHeader.height = height;
     /*Main Header*/
@@ -382,9 +377,9 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
         m_aviStream.rate = static_cast<uint>(fps);
     m_aviStream.start = 0;
     m_aviStream.length = 0; // пока 0, т.к. еще не добавлено ни одного кадра
-    m_aviStream.suggestedBufferSize = width*height*4; // width*height*3 ???
+    m_aviStream.suggestedBufferSize = width*height*4;
     m_aviStream.quality = -1; //WARNING: Possible problem
-    m_aviStream.sampleSize = width*height*4; // width*height*3 ???
+    m_aviStream.sampleSize = width*height*4;
     /*Avi stream header*/
 
     /*Avi stream format*/
@@ -518,12 +513,10 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.start), 4) == -1)
         qDebug() << "Error while writing m_aviStream.start";
 
-    /*Temp*/
     m_pos2 = m_file.pos();
     if(!m_pos2)
         qDebug() << "Error wrong position";
-    /*Temp*/
-    //пока 0, т.к. нету кадров
+
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.length), 4) == -1)
         qDebug() << "Error while writing m_aviStream.length";
 
@@ -539,10 +532,8 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.language), 4) == -1)
         qDebug() << "Error while writing m_aviStream.language";
 
-    /*Test*/
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.language), 4) == -1)
         qDebug() << "Error while writing m_aviStream.language";
-    /*Test*/
 
     if(m_file.write(reinterpret_cast<char*>(&m_strfChunk.fourCC), 4) == -1)
         qDebug() << "Error while writing m_strfChunk.fourCC";
@@ -594,6 +585,8 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
     /*Блок Junk*/
 
     //Запись аудио
+    //Записи аудио нет, т.к. Qt не
+    //Запись аудио
 
     qint64 pos = m_file.pos();
     if(!pos)
@@ -626,116 +619,8 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
         qDebug() << "Error while writing m_moviList.fourCC";
     /*Записываем в файл*/
 }
-/*Test Start*/
-void AVIWriter::addFrame(QImage *pix)
-{
-//    unsigned int length = static_cast<unsigned int>(buffer->length());
-//    unsigned int paddingSize = 0;
-//    int padding = 0;
 
-//    if(length%4 != 0)
-//        paddingSize = 4 - (length%4);
-
-//    qDebug() << "Padding:" << paddingSize;
-
-//    unsigned int frameSize = length+paddingSize;
-
-//    m_framesSizes.append(frameSize);
-//    ++m_aviStream.length;
-
-//    if(m_file.write("00dc") == -1)
-//        qDebug() << "Error while writing 00dc";
-
-//    if(m_file.write(reinterpret_cast<char*>(&frameSize), 4) == -1)
-//        qDebug() << "Error while writing frame size";
-
-//    if(m_file.write(buffer->data(), buffer->size()) == -1)
-//        qDebug() << "Error while writing frame data";
-
-//    if(paddingSize)
-//        for(unsigned int i = 0; i < paddingSize; ++i)
-//            if(m_file.write(reinterpret_cast<char*>(&padding), 1) == -1)
-//                qDebug() << "Error while writing padding";
-
-    //New
-//    QFile file("temp.txt");
-//    if(!file.open(QIODevice::WriteOnly))
-//        qDebug() << "Can't open temporary file";
-//    pix->save(&file, "BMP");
-//    qint64 length = file.size();
-//    file.close();
-
-//    unsigned int paddingSize = 0;
-//    int padding = 0;
-
-//    if(length%4 != 0)
-//        paddingSize = 4 - (length%4);
-
-//    unsigned int frameSize = static_cast<uint>(length)+paddingSize;
-
-//    m_framesSizes.append(frameSize);
-//    ++m_aviStream.length;
-
-//    if(m_file.write("00dc") == -1)
-//        qDebug() << "Error while writing 00dc";
-
-//    if(m_file.write(reinterpret_cast<char*>(&frameSize), 4) == -1)
-//        qDebug() << "Error while writing frame size";
-
-//    pix->save(&m_file, "BMP");
-
-//    if(paddingSize)
-//        for(unsigned int i = 0; i < paddingSize; ++i)
-//            if(m_file.write(reinterpret_cast<char*>(&padding), 1) == -1)
-//                qDebug() << "Error while writing padding";
-
-    //Newer
-
-    unsigned int frameSize = 0;
-
-    if(m_file.write("00dc") == -1)
-        qDebug() << "Error while writing 00dc";
-
-    qint64 posFrameSize = m_file.pos();
-
-    if(m_file.write(reinterpret_cast<char*>(&frameSize), 4) == -1)
-        qDebug() << "Error while writing frame size";
-
-    pix->save(&m_file, "JPG");
-
-    qint64 posEndOfImg = m_file.pos();
-    qint64 length = posEndOfImg - posFrameSize - 4;
-
-    unsigned int paddingSize = 0;
-    int padding = 0;
-
-    if(length%4 != 0)
-        paddingSize = 4 - (length%4);
-
-    frameSize = static_cast<uint>(length)+paddingSize;
-
-    m_framesSizes.append(frameSize);
-    ++m_aviStream.length;
-
-
-    if(!m_file.seek(posFrameSize))
-        qDebug() << "Seek Error";
-
-    if(m_file.write(reinterpret_cast<char*>(&frameSize), 4) == -1)
-        qDebug() << "Error while writing frame size";
-
-    if(!m_file.seek(posEndOfImg))
-        qDebug() << "Seek Error";
-
-
-    if(paddingSize)
-        for(unsigned int i = 0; i < paddingSize; ++i)
-            if(m_file.write(reinterpret_cast<char*>(&padding), 1) == -1)
-                qDebug() << "Error while writing padding";
-}
-
-/*Test Add Frame*/
-void AVIWriter::addFrame2(QImage *pix, int quality)
+void AVIWriter::addFrame(QImage *pix, int quality)
 {
     unsigned int frameSize = 0;
 
@@ -779,7 +664,7 @@ void AVIWriter::addFrame2(QImage *pix, int quality)
             if(m_file.write(reinterpret_cast<char*>(&padding), 1) == -1)
                 qDebug() << "Error while writing padding";
 }
-/*Test Add Frame*/
+
 void AVIWriter::stop()
 {
     qint64 pos = m_file.pos();
