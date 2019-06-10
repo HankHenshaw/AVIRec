@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>229</width>
-    <height>313</height>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,10 +59,37 @@
     <item row="3" column="1">
      <widget class="QSpinBox" name="spinBoxQuality"/>
     </item>
+    <item row="4" column="0">
+     <widget class="QPushButton" name="pushButtonFile">
+      <property name="text">
+       <string>Output Folder</string>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="1">
      <widget class="QLineEdit" name="lineEditFolder"/>
     </item>
-    <item row="9" column="0" colspan="2">
+    <item row="5" column="0">
+     <widget class="QCheckBox" name="checkBoxSetFPS">
+      <property name="text">
+       <string>Set FPS</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QSpinBox" name="spinBoxFPS"/>
+    </item>
+    <item row="6" column="0">
+     <widget class="QCheckBox" name="checkBoxLockFPS">
+      <property name="text">
+       <string>Lock FPS</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QSpinBox" name="spinBoxLockFPS"/>
+    </item>
+    <item row="8" column="0" colspan="2">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="buttonStart">
@@ -79,40 +106,6 @@
        </widget>
       </item>
      </layout>
-    </item>
-    <item row="4" column="0">
-     <widget class="QPushButton" name="pushButtonFile">
-      <property name="text">
-       <string>Output Folder</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>Test Start</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="1">
-     <widget class="QSpinBox" name="spinBoxLockFPS"/>
-    </item>
-    <item row="6" column="0">
-     <widget class="QCheckBox" name="checkBoxSetFPS">
-      <property name="text">
-       <string>Set FPS</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="QSpinBox" name="spinBoxFPS"/>
-    </item>
-    <item row="7" column="0">
-     <widget class="QCheckBox" name="checkBoxLockFPS">
-      <property name="text">
-       <string>Lock FPS</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
