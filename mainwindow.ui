@@ -69,27 +69,27 @@
     <item row="4" column="1">
      <widget class="QLineEdit" name="lineEditFolder"/>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QCheckBox" name="checkBoxSetFPS">
       <property name="text">
        <string>Set FPS</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="6" column="1">
      <widget class="QSpinBox" name="spinBoxFPS"/>
     </item>
-    <item row="6" column="0">
+    <item row="7" column="0">
      <widget class="QCheckBox" name="checkBoxLockFPS">
       <property name="text">
        <string>Lock FPS</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
+    <item row="7" column="1">
      <widget class="QSpinBox" name="spinBoxLockFPS"/>
     </item>
-    <item row="8" column="0" colspan="2">
+    <item row="9" column="0" colspan="2">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="buttonStart">
@@ -106,6 +106,16 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="labelCodec">
+      <property name="text">
+       <string>Codec</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="comboCodecBox"/>
     </item>
    </layout>
   </widget>

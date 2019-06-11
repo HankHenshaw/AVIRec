@@ -73,7 +73,7 @@ AVIWriter::AVIWriter()
     /*Index Chunk*/
 }
 
-void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
+void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height, const char *codec)
 {
     if(!fps)
         qDebug() << "fps can't be null";
@@ -96,8 +96,7 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
 
     /*Avi stream header*/
     m_aviStream.fccType = 0x73646976; // vids
-    //m_aviStream.fccHandler = 0x44495658; // XVID, пока только этот кодек, потом поменять
-    m_aviStream.fccHandler = 0x47504A4D; // MJPG
+    m_aviStream.fccHandler = static_cast<unsigned int>(reinterpret_cast<size_t>(codec));
     m_aviStream.flags = 0;
     m_aviStream.priority = 0;
     m_aviStream.language = 0;
@@ -117,7 +116,7 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     m_streamFormat.height = height;
     m_streamFormat.planes = 1;
     m_streamFormat.bitCount = 32;
-    m_streamFormat.compression = m_aviStream.fccHandler; // XVID, пока только этот кодек, потом поменять
+    m_streamFormat.compression = m_aviStream.fccHandler;
     m_streamFormat.sizeImage = width*height*4;
     m_streamFormat.xPelsPerMeter = 0;
     m_streamFormat.yPelsPerMeter = 0;
@@ -209,7 +208,7 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.fccType), 4) == -1)
         qDebug() << "Error while writing m_aviStream.fccType";
 
-    if(m_file.write(reinterpret_cast<char*>(&m_aviStream.fccHandler), 4) == -1)
+    if(m_file.write(reinterpret_cast<const char*>(m_aviStream.fccHandler), 4) == -1)
         qDebug() << "Error while writing m_aviStream.fccHandler";
 
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.flags), 4) == -1)
@@ -273,7 +272,7 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
     if(m_file.write(reinterpret_cast<char*>(&m_streamFormat.bitCount), 2) == -1)
         qDebug() << "Error while writing m_streamFormat.bitCount";
 
-    if(m_file.write(reinterpret_cast<char*>(&m_streamFormat.compression), 4) == -1)
+    if(m_file.write(reinterpret_cast<const char*>(m_streamFormat.compression), 4) == -1)
         qDebug() << "Error while writing m_streamFormat.compression";
 
     if(m_file.write(reinterpret_cast<char*>(&m_streamFormat.sizeImage), 4) == -1)
@@ -339,7 +338,7 @@ void AVIWriter::start(unsigned int fps, unsigned int width, unsigned int height)
 
 }
 
-void AVIWriter::start(unsigned int width, unsigned int height, QString outputDirectory, int fps)
+void AVIWriter::start(unsigned int width, unsigned int height, QString outputDirectory, int fps, const char* codec)
 {
     m_isFpsSet = fps;
     qDebug() << m_isFpsSet;
@@ -364,8 +363,7 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
 
     /*Avi stream header*/
     m_aviStream.fccType = 0x73646976; // vids
-    //m_aviStream.fccHandler = 0x44495658; // XVID, пока только этот кодек, потом поменять
-    m_aviStream.fccHandler = 0x47504A4D; // MJPG
+    m_aviStream.fccHandler = static_cast<unsigned int>(reinterpret_cast<size_t>(codec)); //WARNING!!!
     m_aviStream.flags = 0;
     m_aviStream.priority = 0;
     m_aviStream.language = 0;
@@ -388,7 +386,7 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
     m_streamFormat.height = height;
     m_streamFormat.planes = 1;
     m_streamFormat.bitCount = 32; // Глянуть в каком формате и разрядности делает скриншоты Qt!!! 24???
-    m_streamFormat.compression = m_aviStream.fccHandler; // XVID, пока только этот кодек, потом поменять
+    m_streamFormat.compression = m_aviStream.fccHandler;
     m_streamFormat.sizeImage = width*height*4; // width*height*3 ???
     m_streamFormat.xPelsPerMeter = 0;
     m_streamFormat.yPelsPerMeter = 0;
@@ -488,7 +486,7 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.fccType), 4) == -1)
         qDebug() << "Error while writing m_aviStream.fccType";
 
-    if(m_file.write(reinterpret_cast<char*>(&m_aviStream.fccHandler), 4) == -1)
+    if(m_file.write(reinterpret_cast<const char*>(m_aviStream.fccHandler), 4) == -1)
         qDebug() << "Error while writing m_aviStream.fccHandler";
 
     if(m_file.write(reinterpret_cast<char*>(&m_aviStream.flags), 4) == -1)
@@ -556,7 +554,7 @@ void AVIWriter::start(unsigned int width, unsigned int height, QString outputDir
     if(m_file.write(reinterpret_cast<char*>(&m_streamFormat.bitCount), 2) == -1)
         qDebug() << "Error while writing m_streamFormat.bitCount";
 
-    if(m_file.write(reinterpret_cast<char*>(&m_streamFormat.compression), 4) == -1)
+    if(m_file.write(reinterpret_cast<const char*>(m_streamFormat.compression), 4) == -1)
         qDebug() << "Error while writing m_streamFormat.compression";
 
     if(m_file.write(reinterpret_cast<char*>(&m_streamFormat.sizeImage), 4) == -1)

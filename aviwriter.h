@@ -83,8 +83,8 @@ class AVIWriter
 {
 public:
     AVIWriter();
-    void start(unsigned int fps, unsigned int width, unsigned int height);
-    void start(unsigned int width, unsigned int height, QString outputDirectory, int fps = 0); //Test
+    void start(unsigned int fps, unsigned int width, unsigned int height, const char* codec = "MJPG");
+    void start(unsigned int width, unsigned int height, QString outputDirectory, int fps = 0, const char* codec = "MJPG");
     void addFrame(QImage *pix, int quality = -1);
     void stop();
     void stop(int time, int numberOfFrames);

@@ -45,6 +45,7 @@ private:
     QString m_outputDir;
     int m_fps;
     int m_lockedFps;
+    QStringList m_codecList;
 
     QImage takeFrame();
 };
