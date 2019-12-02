@@ -2,7 +2,7 @@
 Простенькое приложение для видеозахвата экрана в формате .avi.
 
 # Screensohts
-![Screen1](https://imgur.com/esB48Nw)
+![Screen1](https://i.imgur.com/rTiynOe.png)
 
 # Known Bugs
 При повторном нажитии на запись, на записанном видео могут появляться артефакты.
