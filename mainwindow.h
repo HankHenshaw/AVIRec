@@ -40,7 +40,6 @@ private:
     QList<QScreen*> m_screens;
     bool m_isDone;
     int m_frames;
-    AVIWriter m_writer;
     QImage m_frame;
     QString m_outputDir;
     int m_fps;

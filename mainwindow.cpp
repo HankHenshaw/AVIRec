@@ -71,7 +71,6 @@ MainWindow::MainWindow(QWidget *parent) :
         m_futureVecImage.push_back(QFuture<QImage>());
     }
 
-    //TODO: При повторной записи возникает артефакты
     //TODO: FPS Lock выдает не совсем точный результат, но близко к выбранному
 }
 
@@ -82,6 +81,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_buttonStart_clicked()
 {
+    AVIWriter m_writer;
+
     qDebug() << "Start";
     m_isDone = false;
     m_frames = 0;
@@ -235,7 +236,6 @@ void MainWindow::on_buttonStop_clicked()
 {
     qDebug() << "Stop";
     m_isDone = true;
-    //Подумать об проблемемах при аварийном завершении программы
 }
 
 QImage MainWindow::takeFrame()

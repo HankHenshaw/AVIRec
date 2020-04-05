@@ -3,6 +3,3 @@
 
 # Screensohts
 ![Screen1](https://i.imgur.com/rTiynOe.png)
-
-# Known Bugs
-При повторном нажитии на запись, на записанном видео могут появляться артефакты.
